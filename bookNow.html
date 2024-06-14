@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Planning</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <form id="form1"> 
+            <h3> Input your Budget and Event Type</h3>
+            <select required>
+                <option value="">Select your Budget</option>
+                <option value="budget2">15k - 30k </option>
+                <option value="budget3">30k - 45k </option>
+                <option value="budget3">45k - more </option>
+                <!-- Add more options as needed -->
+            </select>
+            <select required>
+                <option value="">Select Event Type</option>
+                <option value="birthday">Birthday</option>
+                <option value="wedding">Wedding</option>
+                <option value="anniversary">Anniversary</option>
+                <!-- Add more options as needed -->
+            </select>
+            <div class="btn-box">
+                <button onclick="nextfunction()" type ="button" id="Next1"> Next </button>
+            </div>
+        </form>
+        <form id="form2"> 
+            <h3> Input the Venue must be in Islamabad</h3>
+            <select required>
+                <option value="">Select the Location</option>
+                <option value="location2">Sector E-11</option>
+                <option value="location2">Sector G-10</option>
+                <option value="location2">Sector G-11</option>
+                <option value="location2">Sector H-13</option>
+                <option value="location2">Blue Area</option>
+                <option value="location2">Bahria Enclave</option>
+                <!-- Add more options as needed -->
+            </select>
+            <select required>
+                <option value="">Select the Theme</option>
+                <option value="theme1">Theme 1</option>
+                <option value="theme2">Theme 2</option>
+                <option value="theme3">Theme 3</option>
+                <!-- Add more options as needed -->
+            </select>
+            <div class="btn-box">
+                <button type="button" id="Back1"> Back </button>
+                <button type="button" id="Next2"> Next </button>
+            </div>
+        </form>
+
+        <form id="form3"> 
+            <h3> Select services </h3>
+            <label>
+                <input type="checkbox" name="photographyOption"> Catering
+            </label>
+            <label>
+                <input type="checkbox" name="photographyOption">Decorartion 
+            </label>
+            <label>
+                <input type="checkbox" name="photographyOption"> Photography
+            </label>
+            <div class="btn-box">
+                <button type="button" id="Back2"> Back </button>
+                <button type="button" id="Next3"> Next </button>
+            </div>
+        </form>
+        
+        <form id="form4"> 
+            <h3> Select menu </h3>
+            <select required>
+                <option value="">Select the menu</option>
+                <optgroup label="Menu 1">
+                    <option value="starter1">Starter 1</option>
+                    <option value="maincourse1">Main Course 1</option>
+                    <option value="sweetdish1">Sweet Dish 1</option>
+                </optgroup>
+                <optgroup label="Menu 2">
+                    <option value="starter2">Starter 2</option>
+                    <option value="maincourse2">Main Course 2</option>
+                    <option value="sweetdish2">Sweet Dish 2</option>
+                </optgroup>
+                <optgroup label="Menu 3">
+                    <option value="starter3">Starter 3</option>
+                    <option value="maincourse3">Main Course 3</option>
+                    <option value="sweetdish3">Sweet Dish 3</option>
+                </optgroup>
+                <!-- Add more options as needed -->
+            </select>
+            <div class="btn-box">
+                <button type="button" id="Back3"> Back </button>
+                <button type="submit"> Submit </button>
+            </div>
+        </form>
+
+        <div class="step-row">
+            <div id="progress"></div>
+            <div class="step-col"><small> Step 1</small></div>
+            <div class="step-col"><small> Step 2</small></div>
+            <div class="step-col"><small> Step 3</small></div>
+            <div class="step-col"><small> Step 4</small></div>
+        </div>
+    </div>
+    <script>
+        var form1 = document.getElementById("form1");
+        var form2 = document.getElementById("form2");
+        var form3 = document.getElementById("form3");
+        var form4 = document.getElementById("form4");
+
+        var Next1 = document.getElementById("Next1");
+        var Next2 = document.getElementById("Next2");
+        var Next3 = document.getElementById("Next3");
+        var Back1 = document.getElementById("Back1");
+        var Back2 = document.getElementById("Back2");
+        var Back3 = document.getElementById("Back3");
+
+        var progress = document.getElementById("progress");
+
+        Next1.onclick = function(){
+            form1.style.left = "-400px";
+            form2.style.left = "20px";
+            progress.style.width = "160px";
+        }
+        Back1.onclick = function(){
+            form1.style.left = "20px";
+            form2.style.left = "400px";
+            progress.style.width = "0";
+        }
+        Next2.onclick = function(){
+            form2.style.left = "-400px";
+            form3.style.left = "20px";
+            progress.style.width = "240px";
+        }
+        Back2.onclick = function(){
+            form2.style.left = "20px";
+            form3.style.left = "400px";
+            progress.style.width = "160px";
+        }
+        Next3.onclick = function(){
+            form3.style.left = "-400px";
+            form4.style.left = "20px";
+            progress.style.width = "400px";
+        }
+        Back3.onclick = function(){
+            form3.style.left = "20px";
+            form4.style.left = "400px";
+            progress.style.width = "240px";
+        }
+    </script>
+</body>
+</html>
