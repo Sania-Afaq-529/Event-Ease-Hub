@@ -58,15 +58,31 @@ async function userLogin(req, res) {
 }
 
 async function userDelete(req, res) {
+  console.log("req.params.id ===>",req.params.id)
   const user_delete = await UserModel.findByIdAndDelete(req.params.id);
 
   return res.send(user_delete);
 }
 
 async function getAllUsers(req, res) {
-  const user_login = await UserModel.find({});
+  const { role } = req.query;
 
-  return res.send(user_login);
+  console.log("role --------->",role)
+
+  let query = {};
+  if (role) {
+    query = { role:role }; // Filter by role if role parameter is provided
+  }
+
+  try {
+    const users = await UserModel.find(query);
+    const reversedUsers = users.reverse();
+
+    return res.send(reversedUsers);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return res.status(500).send('Failed to query users !!');
+  }
 }
 
 module.exports = {
