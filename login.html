@@ -11,26 +11,7 @@
     <link rel="stylesheet" href="assets/css/fontawsom-all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/login_style.css" />
 
-    <!-- Add Google Sign-In Script -->
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script>
-        // Google Sign-In Callback Function
-        function onSignIn(googleUser) {
-            // Handle sign-in success here
-            var profile = googleUser.getBasicProfile();
-            var idToken = googleUser.getAuthResponse().id_token;
-            
-            // You can send the idToken to your backend to authenticate the user
-            // Example:
-            // var xhr = new XMLHttpRequest();
-            // xhr.open('POST', 'your_backend_url_here');
-            // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            // xhr.onload = function() {
-            //     console.log('Signed in as: ' + xhr.responseText);
-            // };
-            // xhr.send('idtoken=' + idToken);
-        }
-    </script>
+    
 
 </head>
 <body class="h-100">
@@ -39,7 +20,7 @@
             
             <div class="row no-margin">
                 <div class="bg-layer  ">  
-                    _<form action="login.php" method="post">
+                    _<form id="loginForm">
                         <div class="login-box row">
                             <i class="fab fa-codepen"></i>
                             <h3>User login</h3>
@@ -84,6 +65,72 @@
                             
                         </div>
                     </form>
+                    <script>
+                        document.getElementById("loginForm").addEventListener("submit", function(event) {
+                            event.preventDefault(); // Prevent default form submission
+                    
+                            var email = document.querySelector('input[name="email"]').value;
+                            var password = document.querySelector('input[name="password"]').value;
+                    
+                            // Basic validation
+                            if (!email || !password) {
+                                alert('All fields are required');
+                                return;
+                            }
+                    
+                            var formData = {
+                                email: email,
+                                password: password
+                            };
+                    
+                            // Send login data to backend API
+                            fetch('http://localhost:8080/users/login', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(formData)
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json(); // Parse JSON response
+                            })
+                            .then(data => {
+                                // Handle successful login
+                                if (data.token) {
+                                    alert('Login successful!');
+                                    // Store the token securely
+                                    localStorage.setItem('token', data.token);
+                                    // Optionally redirect to a protected route
+                                    window.location.href = '/dashboard.html';
+                                } else {
+                                    alert('Error: ' + data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('An error occurred. Please try again.');
+                            });
+                        });
+                    
+                        function startGoogleSignin() {
+                            var auth2 = gapi.auth2.getAuthInstance();
+                            auth2.signIn().then(function(googleUser) {
+                                var profile = googleUser.getBasicProfile();
+                                var idToken = googleUser.getAuthResponse().id_token;
+                    
+                                // Handle the ID token as needed (e.g., send it to your backend for verification)
+                                console.log('ID token:', idToken);
+                            }, function(error) {
+                                console.error('Error signing in with Google:', error);
+                            });
+                        }
+                    </script>
+                    
+
+
                     
                 </div>
             </div>

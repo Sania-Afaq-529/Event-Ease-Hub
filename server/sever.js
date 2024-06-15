@@ -4,13 +4,13 @@ const express = require("express");
 const db_connection = require("./db_connection/db");
 const { user_routes } = require("./routes/UserRoutes");
 const path = require("path");
-
+const cors = require("cors")
 const app = express();
 
 app.use(express.urlencoded());
 app.use(express.json());
 app.use(express.static(path.resolve("./Public")));
-
+app.use(cors());
 app.use("/users", user_routes);
 
 const PORT = process.env.PORT || 8080;

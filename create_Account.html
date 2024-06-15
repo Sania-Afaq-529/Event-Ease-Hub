@@ -19,9 +19,6 @@
     justify-content: center;
     height: 100vh;
     background-image: url(assets/img/bg_2.jpg);
-
-
-
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -69,7 +66,100 @@ button:hover {
 </head>
 
 <body>
+
     <h2>Create Your Account</h2>
+    <form id="signupForm" >
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit" id="submitBtn">Create Account</button>
+
+    </form>
+
+<script>
+    document.getElementById("submitBtn").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        var email = document.getElementById('email').value;
+
+        // Basic validation
+        if (!username || !password || !confirmPassword || !email) {
+            alert('All fields are required');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        // Create an object with the form data
+        var formData = {
+            username: username,
+            password: password,
+            email: email
+        };
+
+        // Send the form data to the backend API using fetch
+        fetch('http://localhost:8080/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+
+        .then(response => {
+               
+                return response.json(); // Parse JSON response
+            })
+            .then(data => {
+                // Handle successful registration
+                console.log(data);
+                if (data.status === 200) {
+                    alert('Account created successfully!');
+                    // Optionally redirect to login page
+                    //window.location.href = '';
+                } 
+                else if(data.status ===400){
+                alert('Account already exists!');
+                }
+                 else
+                 {
+                    alert('Error: ' + data.message);
+                }
+            })
+        /*.then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Account created successfully!');
+                // Redirect or update UI
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })*/
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
+    });
+</script>
+
+
+
+
+    <!--<h2>Create Your Account</h2>
     <form action="server.php" method="post" onsubmit="validateForm()">
         <form action="server.php" method="post">
             <label for="username">Username:</label>
@@ -109,7 +199,7 @@ button:hover {
             alert('Good to go');
             // document.getElementById('signupForm').submit(); // Uncomment this line to submit the form
         }
-    </script>
+    </script> -->
 </body>
 
 </html>
