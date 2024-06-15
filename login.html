@@ -47,7 +47,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-at"></i></span>
                                 </div>
-                                <input type="text" class="form-control form-control-sm" placeholder="username" aria-label="username" aria-describedby="basic-addon1" name="username">
+                                
+                                <input type="email" class="form-control form-control-sm" placeholder="email" aria-label="email" aria-describedby="basic-addon1" name="email">
                             </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
@@ -59,9 +60,27 @@
                             <button type="submit" class="btn btn-default">Click to Login</button>
                     
                             <p class="no-c">Not a member yet? <a href="create_Account.html">Create your Account</a></p>
-
+                            <button onclick="startGoogleSignin()" class="btn btn-neutral btn-google btn-icon btn-round">
+                                <i class="fab fa-google"></i>
+                                Sign in with Google
+                            </button>
                               <!-- Google Sign-In Button -->
                               <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                              <script>
+                                function startGoogleSignin() {
+                                    var auth2 = gapi.auth2.getAuthInstance();
+                                    auth2.signIn().then(function(googleUser) {
+                                        var profile = googleUser.getBasicProfile();
+                                        var idToken = googleUser.getAuthResponse().id_token;
+                            
+                                        // Handle the ID token as needed (e.g., send it to your backend for verification)
+                                        console.log('ID token:', idToken);
+                                    }, function(error) {
+                                        console.error('Error signing in with Google:', error);
+                                    });
+                                }
+                            </script>
+                            
                             
                         </div>
                     </form>

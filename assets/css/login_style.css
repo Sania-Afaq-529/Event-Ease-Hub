@@ -321,4 +321,28 @@ input::-webkit-input-placeholder {
     .login-box .no-c a {
       text-decoration: underline; }
 
+      .btn-google {
+        display: inline-block;
+        background-color: #ffffff;
+        color: #757575;
+        border: 1px solid #757575;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.6;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .btn-google:hover {
+        background-color: #f1f1f1;
+    }
+    
+    .btn-google .fab.fa-google {
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+    
+
 /*# sourceMappingURL=style.css.map */
