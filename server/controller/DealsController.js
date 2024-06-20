@@ -4,11 +4,11 @@ const Deal = require("../models/DealModel")
 async function createDeal (req,res) {
     console.log("req.body ------>",req.body)
     try {
-        const {name, budget, food_menu, city, event_type, services } = req.body;
+        const {name, budget, food_menu, location, event_type, services } = req.body;
         const deal = new Deal({
           budget,
           food_menu: JSON.stringify(food_menu),
-          city,
+          location,
           event_type,
           services: JSON.stringify(services),
           name,
@@ -22,14 +22,14 @@ async function createDeal (req,res) {
 
 async function updateDeal (req,res) {
     try {
-        const {name, budget, food_menu, city, event_type, services } = req.body;
+        const {name, budget, food_menu, location, event_type, services } = req.body;
         const deal = await Deal.findById(req.params.id);
         if (!deal) {
           return res.status(404).json({ message: 'Deal not found' });
         }
         deal.budget = budget;
         deal.food_menu = JSON.stringify(food_menu);
-        deal.city = city;
+        deal.location = location;
         deal.event_type = event_type;
         deal.services = JSON.stringify(services);
         deal.name = name

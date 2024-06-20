@@ -147,6 +147,8 @@ document.getElementById('bookNowButton3').addEventListener('click', function(eve
       deals.forEach(deal => {
         const dealElement = document.createElement('div');
         dealElement.classList.add('ag-courses_item');
+        const services = JSON.parse(deal.services).join(', ');
+        const foodMenu = JSON.parse(deal.food_menu).join(', ');
         dealElement.innerHTML = `
          
          
@@ -156,11 +158,11 @@ document.getElementById('bookNowButton3').addEventListener('click', function(eve
           <div class="ag-courses-item_title">
              <h3>${deal.name}</h3>
           </div>
-   <p>Price: ${deal.price}</p>
+   <p>Price: ${deal.budget}</p>
           <p>Event Type: ${deal.event_type}</p>
-          <p>City: ${deal.city}</p>
-          <p>Services: ${deal.services}</p>
-          <p>Food Menu: ${deal.food_menu}</p>
+          <p>Location: ${deal.location}</p>
+          <p>Services: ${services}</p>
+          <p>Food Menu: ${foodMenu}</p>
           <button id="btn${deal._id}" onclick='subscribeToDeal("${deal._id}")'>Book Now</button>
         </div>
         `;
@@ -176,10 +178,7 @@ document.getElementById('bookNowButton3').addEventListener('click', function(eve
   
   window.subscribeToDeal = function(dealId) {
     Swal.fire('Subscribed!', 'You have subscribed to the deal: ' + dealId, 'success');
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': `Bearer ${userToken}`
-  // },
+ 
     closeDealsPopup();
   }
   
@@ -195,8 +194,7 @@ document.getElementById('bookNowButton3').addEventListener('click', function(eve
     })
     .then(response => response.json())
     .then(data => {
-      // Swal.fire('Booking Confirmed!', 'Your booking has been confirmed with ID: ' + data.booking_id, 'success');
-      // closeDealsPopup();
+     
     })
     .catch(error => {
     });
@@ -206,7 +204,6 @@ document.getElementById('bookNowButton3').addEventListener('click', function(eve
     const userToken = localStorage.getItem('userToken');
     document.getElementById(`btn${dealId}`).textContent = 'Loading...'
 
-      // Swal.fire('Subscribed!', 'You have subscribed to the deal: ' + dealId, 'success');
       fetch('http://localhost:8080/booking/checkout', {
         method: 'POST',
         headers: {
@@ -225,16 +222,13 @@ document.getElementById('bookNowButton3').addEventListener('click', function(eve
       console.log("Data ",data)
       sessionStorage.setItem('bookingId',data.id);
       window.location.href = data.url
-        // Swal.fire('Booking Confirmed!', 'Your booking has been confirmed with ID: ' + data.booking_id, 'success');
-        // closeDealsPopup();
     })
     .catch(error => {
     document.getElementById(`btn${dealId}`).textContent = 'Book Now'
 
-        // console.error('Error:', error);
-        // Swal.fire('Error', 'There was an error processing your booking.', 'error');
+       
     });
-      // closeDealsPopup();
+      
   }
 
   window.manualBooking = function(bookingPayload) {
@@ -267,10 +261,8 @@ document.getElementById('bookNowButton3').addEventListener('click', function(eve
       checkbox.addEventListener('change', toggleFoodMenu);
   });
 
-  // Attach submitForm to the submit button
   document.querySelector('#bookingForm button[type="button"]').addEventListener('click', submitForm);
 
-  // Make closeForm function accessible globally
   window.closeForm = closeForm;
   window.closeDealsPopup = closeDealsPopup;
 });

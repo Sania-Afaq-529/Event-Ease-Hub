@@ -15,13 +15,14 @@
 <body class="h-100">
     <div class="container-fluid full-bg h-100">
         <div class="container h-100">
-            <div class="row no-margin d-flex justify-content-center">
+            <div class="row no-margin d-flex justify-content-center align-items-center h-100">
                 <div class="bg-layer">
-                    <h1 class="text-light"><a href="index.html"><span>EVENTEASE HUB</span></a></h1>
 
                     <form id="loginForm">
-                        <div class="login-box row">
-                            <i class="fab fa-codepen"></i>
+
+                        <div class="login-box row" style="margin-top: 20px;">
+
+                    <a href="index.html" style="color: white; display: flex; justify-content: center; width: 100%;">  <i class="fab fa-codepen"></i></a>
                             <h3>User login</h3>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
@@ -87,6 +88,15 @@
 
                                 // Handle successful login
                                 if (data.token) {
+
+                                    if(data.user.role !== "USER"){
+                                        Swal.fire({
+                                    icon: 'error',
+                                    title: 'An error occurred',
+                                    text: 'Invalid Email or Password !!'
+                                });
+                                        return;
+                                    }
                                     // Store the token and user info securely
                                     localStorage.setItem('userToken', data.token);
                                     localStorage.setItem('userInfo', JSON.stringify(data.user));

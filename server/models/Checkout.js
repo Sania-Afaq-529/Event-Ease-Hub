@@ -47,6 +47,10 @@ const bookingSchema = new mongoose.Schema({
     type:String,
     required:false
   },
+  serviceProviderId:{
+    type:String,
+    required:false
+  },
   checkoutUrl:{
     type:String,
     required:false
