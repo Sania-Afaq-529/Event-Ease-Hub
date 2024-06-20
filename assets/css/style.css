@@ -2758,4 +2758,20 @@ section {
   color: white;
   cursor: pointer;
 }
+::-webkit-scrollbar {
+  width: 4px !important;
+}
 
+::-webkit-scrollbar-track {
+  background: gainsboro !important; /* O ptional: background color */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(rgb(121, 40, 202) 0%, rgb(255, 0, 128) 100%) !important; /* Optional: scrollbar handle color */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(rgb(121, 40, 202) 0%, rgb(255, 0, 128) 100%) !important; /* Optional: scrollbar handle color on hover */
+}
