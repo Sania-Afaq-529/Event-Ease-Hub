@@ -1091,6 +1091,10 @@ section {
   .gallery .swiper-wrapper {
     padding: 40px 0;
   }
+  .user_profile {
+    display: none !important;
+  }
+  
 
   .gallery .swiper-slide-active {
     border: 6px solid var(--color-primary);
@@ -1431,6 +1435,12 @@ section {
   .pricing .box {
     max-width: 60%;
     margin: 0 auto 30px auto;
+  }
+  .profile_icon {
+    width: 20px;
+    height: 20px;
+    color: white;
+    display: none;
   }
 }
 
@@ -2514,3 +2524,238 @@ section {
 #footer .credits a {
   color: #a2cce3;
 }
+
+.ag-format-container {
+  margin: 0 auto;
+  color: whitesmoke !important;
+  background-color: #000 !important;
+}
+
+
+.ag-courses_box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+
+  padding: 50px 0;
+}
+.ag-courses_item {
+  -ms-flex-preferred-size: calc(33.33333% - 30px);
+  flex-basis: calc(33.33333% - 30px);
+
+  margin: 0 15px 30px;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+  min-width: 300px !important;
+}
+.ag-courses-item_link {
+  display: block;
+  padding: 30px 20px;
+  background-color: #121212;
+
+  overflow: hidden;
+
+  position: relative;
+}
+.ag-courses-item_link p {
+ position: relative;
+ z-index: 2;
+}
+.ag-courses-item_link h3 {
+  position: relative;
+  z-index: 2;
+}
+.ag-courses-item_link button {
+  position: relative;
+  z-index: 2;
+  background: #81c120;
+    padding-block: 5px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 20px;
+    border: none;
+    padding-inline: 43px;
+    width: 100%;
+}
+.deals-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.ag-courses-item_link:hover,
+.ag-courses-item_link:hover .ag-courses-item_date {
+  text-decoration: none;
+  color: #FFF;
+}
+.ag-courses-item_link:hover .ag-courses-item_bg {
+  -webkit-transform: scale(10);
+  -ms-transform: scale(10);
+  transform: scale(10);
+}
+.ag-courses-item_title {
+  min-height: 87px;
+  margin: 0 0 25px;
+
+  overflow: hidden;
+
+  font-weight: bold;
+  font-size: 30px;
+  color: #FFF;
+
+  z-index: 2;
+  position: relative;
+}
+.ag-courses-item_date-box {
+  font-size: 18px;
+  color: #FFF;
+
+  z-index: 2;
+  position: relative;
+}
+.ag-courses-item_date {
+  font-weight: bold;
+  color: #f9b234;
+
+  -webkit-transition: color .5s ease;
+  -o-transition: color .5s ease;
+  transition: color .5s ease
+}
+.ag-courses-item_bg {
+  height: 128px;
+  width: 128px;
+  background-color: #f9b234;
+
+  z-index: 1;
+  position: absolute;
+  top: -75px;
+  right: -75px;
+
+  border-radius: 50%;
+
+  -webkit-transition: all .5s ease;
+  -o-transition: all .5s ease;
+  transition: all .5s ease;
+}
+.ag-courses_item:nth-child(2n) .ag-courses-item_bg {
+  background-color: rgb(139, 102, 139);
+}
+.ag-courses_item:nth-child(3n) .ag-courses-item_bg {
+  background-color: #e44002;
+}
+.ag-courses_item:nth-child(4n) .ag-courses-item_bg {
+  background-color: #952aff;
+}
+.ag-courses_item:nth-child(5n) .ag-courses-item_bg {
+  background-color: #cd3e94;
+}
+.ag-courses_item:nth-child(6n) .ag-courses-item_bg {
+  background-color: #4c49ea;
+}
+
+
+
+@media only screen and (max-width: 979px) {
+  .ag-courses_item {
+    -ms-flex-preferred-size: calc(50% - 30px);
+    flex-basis: calc(50% - 30px);
+  }
+  .ag-courses-item_title {
+    font-size: 24px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .ag-format-container {
+    width: 96%;
+  }
+
+}
+@media only screen and (max-width: 639px) {
+  .ag-courses_item {
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+  }
+  .ag-courses-item_title {
+    min-height: 72px;
+    line-height: 1;
+
+    font-size: 24px;
+  }
+  .ag-courses-item_link {
+    padding: 22px 40px;
+  }
+  .ag-courses-item_date-box {
+    font-size: 16px;
+  }
+}
+.manual-booking-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.manual-booking-container button {
+  padding-block: 10px;
+        padding-inline: 100px;
+        border-radius: 45px;
+        border: none;
+        color: white;
+        background: forestgreen;
+}
+.content_non_deals {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+
+/* Loader Css  */
+
+/* Add this to your CSS file or in a <style> block */
+.loader_container {
+  position: fixed;
+  background: rgb(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loader {
+  position: fixed;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #915c83;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+ 
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.profile_icon {
+  width: 20px;
+  height: 20px;
+  color: white;
+  cursor: pointer;
+}
+

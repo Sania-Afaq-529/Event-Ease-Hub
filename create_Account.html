@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/fontawsom-all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <style>
     body {
     font-family: 'Arial', sans-serif;
@@ -80,7 +82,9 @@ button:hover {
 
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
-        <button type="submit" id="submitBtn">Create Account</button>
+        <button type="submit" id="submitBtn" style="border: none; outline: #915c83;">Create Account</button>
+        <p class="no-c mt-2">Already register? <a style="color: blueviolet;" href="login.html" class="text-black">Go to Login</a></p>
+                          
 
     </form>
 
@@ -95,15 +99,25 @@ button:hover {
 
         // Basic validation
         if (!username || !password || !confirmPassword || !email) {
-            alert('All fields are required');
+          Swal.fire({
+              icon: 'error',
+              title: 'Validation Error',
+              text: "All Fields are required !!"
+          });
             return;
         }
 
         if (password !== confirmPassword) {
-            alert('Passwords do not match');
+            Swal.fire({
+              icon: 'error',
+              title: 'Validation Error',
+              text: "Password doesn't matched !!"
+          });
             return;
         }
 
+
+        document.getElementById("submitBtn").textContent  = 'Loading...'
         // Create an object with the form data
         var formData = {
             username: username,
@@ -121,6 +135,7 @@ button:hover {
         })
 
         .then(response => {
+             document.getElementById("submitBtn").textContent  = 'Create Account'
                
                 return response.json(); // Parse JSON response
             })
@@ -128,16 +143,33 @@ button:hover {
                 // Handle successful registration
                 console.log(data);
                 if (data.status === 200) {
-                    alert('Account created successfully!');
+                    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: "Account created successfully !!",
+        confirmButtonText: 'Go to Login'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = 'login.html';
+        }
+    });
                     // Optionally redirect to login page
                     //window.location.href = '';
                 } 
                 else if(data.status ===400){
-                alert('Account already exists!');
+                Swal.fire({
+              icon: 'error',
+              title: 'Exist User',
+              text: "Account already exists !!"
+          });
                 }
                  else
                  {
-                    alert('Error: ' + data.message);
+                    Swal.fire({
+              icon: 'error',
+              title: 'Something went wrong',
+              text:  data.message
+          });
                 }
             })
         /*.then(response => response.json())
@@ -151,7 +183,13 @@ button:hover {
         })*/
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            document.getElementById("submitBtn").textContent  = 'Create Account'
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Something went wrong',
+              text:  "Please try again !!"
+          });
         });
     });
 </script>

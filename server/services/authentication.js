@@ -1,6 +1,25 @@
 const JWT = require("jsonwebtoken");
 
+
 const secret = "Bilal@123";
+
+const verifyToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+
+  if (!token) {
+    return res.status(403).send({ status: 403, message: 'No token provided' });
+  }
+
+  JWT.verify(token.split(' ')[1], secret, (err, decoded) => { // Replace 'your_secret_key' with your actual secret
+    if (err) {
+      return res.status(500).send({ status: 500, message: 'Failed to authenticate token' });
+    }
+    req.userId = decoded._id;
+    next();
+  });
+};
+
+
 
 function createToken(user) {
   const payload = {
@@ -23,4 +42,5 @@ function validateToken(token) {
 module.exports = {
   createToken,
   validateToken,
+  verifyToken
 };

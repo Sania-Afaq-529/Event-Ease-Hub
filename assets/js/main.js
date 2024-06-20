@@ -336,4 +336,74 @@ function submitForm() {
    */
   new PureCounter();
 
-})()
+})();
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Show loader
+  document.body.classList.add('loading');
+  const loader = document.getElementById('loader');
+  loader.style.display = 'flex';
+
+  // Function to update buttons based on userToken
+  function updateButtons() {
+    const userToken = localStorage.getItem('userToken');
+
+    if (userToken) {
+      try {
+        // Decode the token
+        const decodedToken = jwt_decode(userToken);
+
+        // Check if the token is valid (you can add more validation here)
+        if (!decodedToken) {
+          throw new Error('Invalid token');
+        }
+
+        for (let i = 1; i <= 3; i++) {
+          const loginButton = document.getElementById(`loginButton${i}`);
+          const bookNowButton = document.getElementById(`bookNowButton${i}`);
+          bookNowButton.style.display = 'block';
+          loginButton.style.display = 'none';
+        }
+        
+        console.log("Token is valid !!");
+      } catch (error) {
+        console.error('Token decoding failed:', error);
+        // Clear localStorage and redirect to login page
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userInfo');
+
+        window.location.href = 'index.html';
+      }
+    } else {
+      // Update buttons for logged-out state
+      for (let i = 1; i <= 3; i++) {
+        const loginButton = document.getElementById(`loginButton${i}`);
+        const bookNowButton = document.getElementById(`bookNowButton${i}`);
+        loginButton.style.display = 'block';
+        bookNowButton.style.display = 'none';
+      }
+      
+      console.log("Token doesn't exist !!");
+    }
+  }
+
+  // Initial button update
+  updateButtons();
+
+  // Event listener for when the slider changes
+  const heroCarousel = document.getElementById('heroCarousel');
+  if (heroCarousel) {
+    heroCarousel.addEventListener('slide.bs.carousel', function () {
+      updateButtons();
+    });
+  }
+
+  // Hide loader once the DOM is fully loaded
+  window.addEventListener('load', function () {
+    document.body.classList.remove('loading');
+    loader.style.display = 'none';
+  });
+
+
+ 
+});

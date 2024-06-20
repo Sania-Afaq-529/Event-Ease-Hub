@@ -46,7 +46,6 @@ async function getDeals (req,res) {
         const reverseDeals = deals.reverse();
 
         return res.send(reverseDeals);
-        res.json(deals);
       } catch (err) {
         res.status(500).json({ message: err.message });
       }

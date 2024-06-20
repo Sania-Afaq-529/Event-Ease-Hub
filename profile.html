@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <style>
+        body {
+            background: linear-gradient(to right, #915c83, #764ba2);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            min-height: 400px;
+        }
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-button {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 18px;
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .back-button i {
+            margin-right: 5px;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+        .tab.active {
+            border-bottom: 2px solid #fff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input:disabled {
+            color: white;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+            padding-block: 10px;
+            outline: 0;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+            .header {
+                flex-direction: column;
+                margin-top: 150px;
+                gap: 20px;
+            }
+            .tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            .tab {
+                margin-bottom: 10px;
+            }
+        }
+        .update_btn {
+            padding-block: 11px;
+    padding-inline: 21px;
+    border-radius: 5px;
+    border: none;
+    background: #2e5519;
+    color: white;
+    cursor: pointer;
+        }
+        .logout_btn {
+            padding-block: 7px;
+    padding-inline: 15px;
+    border: none;
+    background: darkred;
+    border-radius: 8px;
+    cursor: pointer;
+        }
+        .order-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.order-card span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.loading-spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #fff;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.scrollable-container {
+    overflow-y: scroll;
+    padding-inline: 10px;
+    max-height: 400px;
+}
+.order-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.order_item_col {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.order_item_col span {
+    margin-bottom: 5px;
+}
+
+.order-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.order-card ul li {
+    background: rgba(255, 255, 255, 0.2);
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.pay-now-btn {
+    align-self: flex-end;
+    padding: 10px 20px;
+    border: 2px solid #28a745;
+    color: #28a745;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.loading-spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #fff;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+    .order-card {
+        padding: 15px;
+    }
+    .pay-now-btn {
+        width: 100%;
+        padding: 15px;
+    }
+}
+
+::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: gainsboro !important; /* O ptional: background color */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(139, 102, 139) !important; /* Optional: scrollbar handle color */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(139, 102, 139) !important; /* Optional: scrollbar handle color on hover */
+}
+
+    </style>
+</head>
+<body>
+    <div class="container" id="profileContainer">
+        <div class="header">
+            <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Go Back</a>
+            <div class="title">EVENTEASE HUB</div>
+            <div class="logout_btn" id="logoutBtn">Logout</div>
+        </div>
+        <div class="tabs">
+            <div class="tab" data-tab="profile">My Profile</div>
+            <div class="tab" data-tab="pending">My Orders</div>
+        </div>
+        <div class="tab-content" id="profile">
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" disabled name="email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword">
+                </div>
+                <button type="submit" id="update_btn" class="update_btn">Update Profile</button>
+            </form>
+        </div>
+        <div class="tab-content" id="pending">
+            <h5>Order Summary</h5>
+            <div id="orderContainer" class="scrollable-container">
+                <div class="loading-spinner" id="loadingSpinner"></div>
+            </div>
+        </div>
+        
+        
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check for token in localStorage
+            const userToken = localStorage.getItem('userToken');
+            if (!userToken) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Get userInfo from localStorage
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            if (userInfo) {
+                document.getElementById('username').value = userInfo.username;
+                document.getElementById('email').value = userInfo.email;
+            }
+
+            // Tabs functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and tab contents
+                    tabs.forEach(item => item.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked tab and corresponding tab content
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                });
+            });
+
+            // Set default active tab
+            tabs[0].classList.add('active');
+            tabContents[0].classList.add('active');
+
+            // Profile form submission
+            document.getElementById('profileForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                // Basic validation
+                if (!username || !email || !password || !confirmPassword) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'All fields are required.'
+                    });
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'Passwords do not match.'
+                    });
+                    return;
+                }
+
+                const formData = {
+                    username: username,
+                    email: email,
+                    password: password
+                };
+
+                document.getElementById('update_btn').textContent = 'Loading...'
+
+                // Send the form data to the backend API using fetch
+                fetch('http://localhost:8080/users/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${userToken}`
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                document.getElementById('update_btn').textContent = 'Update Profile'
+
+                    console.log("User Info")
+                    if (data.status == 200) {
+                        // Update localStorage
+                        localStorage.setItem('userInfo', JSON.stringify(data.userInfo));
+                        localStorage.setItem('userToken',data.token)
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Profile updated successfully!'
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message
+                        });
+                    }
+                })
+                .catch(error => {
+                document.getElementById('update_btn').textContent = 'Update Profile'
+
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while updating your profile. Please try again later.'
+                    });
+                });
+            });
+             // Logout functionality
+             document.getElementById('logoutBtn').addEventListener('click', function () {
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userInfo');
+                window.location.href = 'login.html';
+            });
+
+
+            // Function to fetch and display orders
+            let ordersFetched = false;
+    function fetchOrders() {
+        
+        const userToken = localStorage.getItem('userToken');
+        if (!userToken) {
+            window.location.href = 'login.html';
+            return;
+        }
+        if (ordersFetched) return; // Exit if orders are already fetched
+        fetch('http://localhost:8080/booking/get-users-orders?status=paid', {
+            headers: {
+                'Authorization': `Bearer ${userToken}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const orderContainer = document.getElementById('orderContainer');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            loadingSpinner.style.display = 'none';
+
+            console.log("data ----->",data)
+
+            data?.orders?.forEach(order => {
+                const orderCard = document.createElement('div');
+                orderCard.classList.add('order-card');
+                orderCard.innerHTML = `
+                    <div class="order_item_col">
+                        <span><strong>Created Date:</strong> ${formatDate(order.createdAt)}</span>
+                        <span><strong>Price:</strong> $${order.budget}</span>
+                        <span><strong>Status:</strong> ${order.status}</span>
+                        <span><strong>Event Type:</strong> ${order.event_type}</span>
+                        <strong>Services:</strong>
+                        <ul>
+                            ${JSON.parse(order.services).map(service => `<li>${service}</li>`).join('')}
+                        </ul>
+                        <strong>Food Menu:</strong>
+                        <ul>
+                            ${JSON.parse(order.food_menu).map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <button class="pay-now-btn">
+                        Paid
+                    </button>
+                `;
+                orderContainer.appendChild(orderCard);
+            });
+
+            // Add event listeners to "Pay Now" buttons
+            document.querySelectorAll('.pay-now-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const sessionId = this.getAttribute('data-session-id');
+                    const checkoutUrl = this.getAttribute('data-checkout-url');
+                    payNow(sessionId, checkoutUrl);
+                });
+            });
+            ordersFetched = true; // Set flag to true after fetching orders
+        })
+        .catch(error => {
+            console.error('Error fetching orders:', error);
+            const orderContainer = document.getElementById('orderContainer');
+            orderContainer.innerHTML = '<p>No Orders Founds !!</p>';
+        });
+    }
+
+     // Function to format date
+     function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    }
+
+    // Function to handle "Pay Now" button click
+    function payNow(sessionId, checkoutUrl) {
+        console.log("Session ID:", sessionId);
+        console.log("Checkout URL:", checkoutUrl);
+        sessionStorage.setItem("bookingId",sessionId)
+        // Add your logic to handle the payment process using sessionId and checkoutUrl
+        const stripe = Stripe('pk_test_51PS2njJXY9U5m14QnpM2MzyzLSO4tgcSxX5Wm0AsmVAQZJUY62MZzCxlPXfXmcdkMzwqEyWtFAlAaHN556Kd8SZF00uwJUeZk4'); // Replace with your Stripe public key
+        stripe.redirectToCheckout({ sessionId: sessionId});
+    }
+
+    // Fetch orders when Pending Orders tab is clicked
+    document.querySelector('.tab[data-tab="pending"]').addEventListener('click', fetchOrders);
+
+    // Set default active tab and fetch orders if it's Pending Orders tab
+    if (document.querySelector('.tab.active').dataset.tab === 'pending') {
+        fetchOrders();
+    }
+        });
+    </script>
+</body>
+</html>

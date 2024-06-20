@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["USER", "ADMIN","SERVICE_PROVIDER"],
+      enum: ["USER", "ADMIN", "SERVICE_PROVIDER"],
       default: "USER",
     },
     profileImageUrl: {
@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.pre("save", function (next) {
   const user = this;
-  if (!user.isModified("password")) return;
+  if (!user.isModified("password")) return next(); // Only hash the password if it has been modified
 
   const salt = crypto.randomBytes(16).toString();
 
@@ -53,7 +53,6 @@ UserSchema.pre("save", function (next) {
 
 UserSchema.static("matchPassword", async function (email, password) {
   const user = await this.findOne({ email });
-
 
   const salt = user.salt;
   const hashedPassword = user.password;

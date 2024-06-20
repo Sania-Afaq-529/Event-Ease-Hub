@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #915c83, #764ba2);
+            font-family: Arial, sans-serif;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: fadeIn 1.5s ease;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .card a {
+            background-color: #915c83;
+            padding-inline: 70px;
+            padding-block: 15px;
+            border-radius: 40px;
+            text-decoration: none;
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-icon {
+            background-color: #26b526;
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .card h1 {
+            margin: 2rem 0 0 0;
+            font-size: 2rem;
+            color: #3c5975;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 1rem;
+            }
+
+            .card h1 {
+                font-size: 1.5rem;
+            }
+
+            .success-icon {
+                width: 40px;
+                height: 40px;
+                top: -20px;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if sessionId exists in sessionStorage
+            const sessionId = sessionStorage.getItem('bookingId');
+            if (!sessionId) {
+                // Redirect to index.html if sessionId doesn't exist
+                window.location.href = 'index.html';
+            } else {
+                // Show success message and hit the API
+                document.querySelector('.card').innerHTML = `
+                    <div class="success-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0C5.383 0 0 5.383 0 12C0 18.617 5.383 24 12 24C18.617 24 24 18.617 24 12C24 5.383 18.617 0 12 0ZM10.354 17.646L4.708 12L6.122 10.586L10.354 14.828L17.878 7.293L19.292 8.707L10.354 17.646Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <h1>Thank you, your booking is done successfully.</h1>
+                    <a href="index.html">Home Page</a>
+                `;
+                sessionStorage.removeItem('bookingId')
+
+                // Make an API call with the sessionId
+                fetch('http://localhost:8080/booking/update-order-status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ sessionId: sessionId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="card"></div>
+</body>
+</html>
