@@ -26,11 +26,17 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
   
 </head>
 
 <body>
+  <!-- Loader -->
+   <div id="loader" class="loader_container">
+    <div  class="loader"></div>
+
+   </div>
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top d-flex align-items-center header-transparent">
@@ -50,15 +56,21 @@
           <li><b><a href="portfolio.html">Portfolio</a></b></li>
           <li><b><a href="#gallery">Gallery</a></b></li>
           <li><b><a href="contact.html">Contact Us</a></b></li>
+          <li><b><a id="profileIcon" class="user_profile" style="cursor: pointer;">My Profile</a></b></li>
+
 
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
         
       </nav><!-- .navbar -->
 
-      <b><a class="btn-book-a-table" href="#" id="bookNowButton">Book Now</a></b>
-      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      <!-- <b><a class="btn-book-a-table" href="#" id="bookNowButton">Book Now</a></b> -->
+     <!-- <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i> -->
+     <span id="profileIcon1" class="profile_icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
+      </svg>
+     </span>
       
 
     </div>
@@ -66,6 +78,7 @@
 
   <!-- BookNow section-->
 
+  <!-- BookNow section -->
   <div id="overlayForm" class="overlay">
     <div class="overlay-content">
       <span class="closebtn" onclick="closeForm()">&times;</span>
@@ -90,7 +103,7 @@
 
         <label for="theme">Theme:</label>
         <select id="theme" name="theme" required>
-          <option value="">Select Theme Colors </option>
+          <option value="">Select Theme Colors</option>
           <option value="whitePink">White & Pink</option>
           <option value="whiteRed">White & Red</option>
           <option value="whiteBlue">White & Blue</option>
@@ -113,61 +126,76 @@
           <input type="checkbox" name="services" value="music" onchange="toggleFoodMenu()"> Music
           <input type="checkbox" name="services" value="photography" onchange="toggleFoodMenu()"> Photography
           <input type="checkbox" name="services" value="food" onchange="toggleFoodMenu()"> Food
-
-
         </div>
 
         <div id="foodMenu" style="display: none;">
           <h3>Food Menu</h3>
           <label>Starters:</label>
           <input type="checkbox" name="food" value="starter1"> French fries
-          <input type="checkbox" name="food" value="starter2"> potato puffs
+          <input type="checkbox" name="food" value="starter2"> Potato puffs
           <input type="checkbox" name="food" value="starter3"> Garlic bread
-          
           <br>
           <label>Main Course:</label>
           <input type="checkbox" name="food" value="main1"> Biryani
           <input type="checkbox" name="food" value="main2"> Crown pizza
-          <input type="checkbox" name="food" value="main2"> Fettucine Alferado pasta
-          <input type="checkbox" name="food" value="main2"> BBQ chicken tikka
-          <input type="checkbox" name="food" value="main2"> Malai chicken tikka
-          <input type="checkbox" name="food" value="main2"> Chicken seekh kebab
-          <input type="checkbox" name="food" value="main2"> Chicken Shami kebab
-          <input type="checkbox" name="food" value="main2"> Chapli kebab
-
+          <input type="checkbox" name="food" value="main3"> Fettucine Alfredo pasta
+          <input type="checkbox" name="food" value="main4"> BBQ chicken tikka
+          <input type="checkbox" name="food" value="main5"> Malai chicken tikka
+          <input type="checkbox" name="food" value="main6"> Chicken seekh kebab
+          <input type="checkbox" name="food" value="main7"> Chicken Shami kebab
+          <input type="checkbox" name="food" value="main8"> Chapli kebab
           <br>
           <label>Sauces:</label>
-          <input type="checkbox" name="food" value="sauce1">Mint sauce
-          <input type="checkbox" name="food" value="sauce2"> Mayi garlic sauce
-          <input type="checkbox" name="food" value="suace3"> BBQ sauce
-
+          <input type="checkbox" name="food" value="sauce1"> Mint sauce
+          <input type="checkbox" name="food" value="sauce2"> Mayo garlic sauce
+          <input type="checkbox" name="food" value="sauce3"> BBQ sauce
           <br>
           <label>Desserts:</label>
-          <input type="checkbox" name="food" value="sweet1">Ice cream
+          <input type="checkbox" name="food" value="sweet1"> Ice cream
           <input type="checkbox" name="food" value="sweet2"> Brownies
-          <input type="checkbox" name="food" value="sweet3"> Choclate lava cake
+          <input type="checkbox" name="food" value="sweet3"> Chocolate lava cake
           <br>
-          <label>Salad:</label>
+          <label>Salads:</label>
           <input type="checkbox" name="food" value="salad1"> Vegetable salad
           <input type="checkbox" name="food" value="salad2"> Fruit salad
-          <input type="checkbox" name="food" value="salad3"> Chicken macroni salad
+          <input type="checkbox" name="food" value="salad3"> Chicken macaroni salad
           <br>
-          <label>Drinks:</label> 
-          <input type="checkbox" name="food" value="Drink1"> pepsi 
-          <input type="checkbox" name="food" value="Drink2"> 7up
-          <input type="checkbox" name="food" value="Drink3"> Marinda
-
+          <label>Drinks:</label>
+          <input type="checkbox" name="food" value="drink1"> Pepsi
+          <input type="checkbox" name="food" value="drink2"> 7up
+          <input type="checkbox" name="food" value="drink3"> Miranda
         </div>
+        
         <div class="form-buttons">
-          <button type="button" onclick="submitForm()">Submit</button>
+          <button type="button" id="submit_form" onclick="submitForm()">Submit</button>
           <button type="button" onclick="closeForm()">Cancel</button>
         </div>
-
-       
-        
       </form>
     </div>
   </div>
+
+  <!-- Popup Modal for Available Deals -->
+  <div id="popupModal"  class="modal ag-format-container">
+    <div class="modal-content ag-courses_box" style="background-color: black ; color: whitesmoke;">
+     <div style="    display: flex;
+     justify-content: center;
+     width: 100%;
+     padding-bottom: 30px;">
+      <h2>Available Deals</h2>
+      <span class="closebtn" onclick="closeDealsPopup()">&times;</span>
+
+     </div>
+      <div id="dealsContent" class="deals-container"></div>
+      <div class="manual-booking-container">
+        <button id="manualBookingButton" onclick="manualBooking()">Manual Booking</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Available Deals  -->
+
+  
   <script>
 
   
@@ -187,47 +215,49 @@
     <!-- End BookNow-->
 
   <!-- ======= Hero Section ======= -->
-  <section id="hero" class="d-flex justify-cntent-center align-items-center">
-    <div id="heroCarousel" class="container carousel carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex justify-content-center align-items-center">
+  <div id="heroCarousel" class="container carousel carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
 
-      <!-- Slide 1 -->
-      <div class="carousel-item active">
-        <div class="carousel-container">
-          <h2 class="animate__animated animate__fadeInDown">Welcome to <span>EventEase Hub</span></h2>
-          <p class="animate__animated animate__fadeInUp">We are dedicated to crafting seamless and unforgettable events tailored to your every need. With our passion for creativity and meticulous attention to detail, we transform your visions into reality, ensuring that each moment is carefully curated to leave a lasting impression. </p>
-          <b> <a class="btn-get-started animate__animated animate__fadeInUp" href="login.html">Login</a> </b>
-          <!--<a href="" class="btn-get-started animate__animated animate__fadeInUp">Read More</a> -->
-        </div>
+    <!-- Slide 1 -->
+    <div class="carousel-item active">
+      <div class="carousel-container">
+        <h2 class="animate__animated animate__fadeInDown">Welcome to <span>EventEase Hub</span></h2>
+        <p class="animate__animated animate__fadeInUp">We are dedicated to crafting seamless and unforgettable events tailored to your every need. With our passion for creativity and meticulous attention to detail, we transform your visions into reality, ensuring that each moment is carefully curated to leave a lasting impression.</p>
+        <b><a id="loginButton1" class="btn-get-started animate__animated animate__fadeInUp" href="login.html">Login</a></b>
+        <b><a id="bookNowButton1" style="cursor: pointer;" class="btn-get-started animate__animated animate__fadeInUp">Book Now</a></b>
       </div>
-
-      <!-- Slide 2 -->
-      <div class="carousel-item">
-        <div class="carousel-container">
-          <h2 class="animate__animated animate__fadeInDown">Elevate Your Events with Us</h2>
-          <p class="animate__animated animate__fadeInUp">Our team of experienced professionals is committed to elevating your events to extraordinary heights. With our innovative approach and personalized service, we create immersive environments that engage all the senses, leaving your guests mesmerized and eager for more.</p>
-          <b> <a class="btn-get-started animate__animated animate__fadeInUp" href="login.html">Login</a> </b>
-        </div>
-      </div>
-
-      <!-- Slide 3 -->
-      <div class="carousel-item">
-        <div class="carousel-container">
-          <h2 class="animate__animated animate__fadeInDown">Crafting Unforgettable Memories</h2>
-          <p class="animate__animated animate__fadeInUp">At EventEase Hub, we understand that every event is a unique opportunity to create cherished memories. That's why we go above and beyond to ensure that each detail is thoughtfully considered and flawlessly executed. </p>
-          <b> <a class="btn-get-started animate__animated animate__fadeInUp" href="login.html">Login</a> </b>
-        </div>
-      </div>
-
-      <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
-      </a>
-
-      <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
-        <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
-      </a>
-
     </div>
-  </section><!-- End Hero -->
+
+    <!-- Slide 2 -->
+    <div class="carousel-item">
+      <div class="carousel-container">
+        <h2 class="animate__animated animate__fadeInDown">Elevate Your Events with Us</h2>
+        <p class="animate__animated animate__fadeInUp">Our team of experienced professionals is committed to elevating your events to extraordinary heights. With our innovative approach and personalized service, we create immersive environments that engage all the senses, leaving your guests mesmerized and eager for more.</p>
+        <b><a id="loginButton2" class="btn-get-started animate__animated animate__fadeInUp" href="login.html">Login</a></b>
+        <b><a id="bookNowButton2" style="cursor: pointer;" class="btn-get-started animate__animated animate__fadeInUp">Book Now</a></b>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="carousel-item">
+      <div class="carousel-container">
+        <h2 class="animate__animated animate__fadeInDown">Crafting Unforgettable Memories</h2>
+        <p class="animate__animated animate__fadeInUp">At EventEase Hub, we understand that every event is a unique opportunity to create cherished memories. That's why we go above and beyond to ensure that each detail is thoughtfully considered and flawlessly executed.</p>
+        <b><a id="loginButton3" class="btn-get-started animate__animated animate__fadeInUp" href="login.html">Login</a></b>
+        <b><a id="bookNowButton3" style="cursor: pointer;" class="btn-get-started animate__animated animate__fadeInUp">Book Now</a></b>
+      </div>
+    </div>
+
+    <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
+    </a>
+    <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+      <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
+    </a>
+  </div>
+</section><!-- End Hero -->
+
 
   <main id="main">
     
@@ -338,21 +368,7 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
 
-    <div class="footer-newsletter">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6">
-            <h4>Give your feedback</h4>
-            <p>Your feedback matters! Share your thoughts with us.</p>
-          </div>
-          <div class="col-lg-6">
-            <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    
 
     <div class="footer-top">
       <div class="container">
@@ -361,20 +377,21 @@
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Useful Links</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.html">Home</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="about.html">About us</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="services.html">Services</a></li>
+             
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Our Services</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Decoration</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Catering</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Photography</a></li>
+              <li>Decoration</li>
+              <li>Catering</li>
+              <li>Photography</li>
+              <li>Music/li>
+
             </ul>
           </div>
 

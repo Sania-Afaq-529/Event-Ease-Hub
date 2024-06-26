@@ -10,25 +10,24 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/fontawsom-all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/login_style.css" />
-
-    
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="h-100">
     <div class="container-fluid full-bg h-100">
         <div class="container h-100">
-            
-            <div class="row no-margin">
-                <div class="bg-layer  ">  
-                    _<form id="loginForm">
-                        <div class="login-box row">
-                            <i class="fab fa-codepen"></i>
+            <div class="row no-margin d-flex justify-content-center align-items-center h-100">
+                <div class="bg-layer">
+
+                    <form id="loginForm">
+
+                        <div class="login-box row" style="margin-top: 20px;">
+
+                    <a href="index.html" style="color: white; display: flex; justify-content: center; width: 100%;">  <i class="fab fa-codepen"></i></a>
                             <h3>User login</h3>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-at"></i></span>
                                 </div>
-                                
                                 <input type="email" class="form-control form-control-sm" placeholder="email" aria-label="email" aria-describedby="basic-addon1" name="email">
                             </div>
                             <div class="input-group mb-3">
@@ -37,52 +36,41 @@
                                 </div>
                                 <input type="password" class="form-control form-control-sm" placeholder="password" aria-label="password" aria-describedby="basic-addon1" name="password">
                             </div>
-                    
-                            <button type="submit" class="btn btn-default">Click to Login</button>
-                    
+                            <button type="submit" id="loginBtn" class="btn btn-default">Click to Login</button>
                             <p class="no-c">Not a member yet? <a href="create_Account.html">Create your Account</a></p>
-                            <button onclick="startGoogleSignin()" class="btn btn-neutral btn-google btn-icon btn-round">
-                                <i class="fab fa-google"></i>
-                                Sign in with Google
-                            </button>
-                              <!-- Google Sign-In Button -->
-                              <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                              <script>
-                                function startGoogleSignin() {
-                                    var auth2 = gapi.auth2.getAuthInstance();
-                                    auth2.signIn().then(function(googleUser) {
-                                        var profile = googleUser.getBasicProfile();
-                                        var idToken = googleUser.getAuthResponse().id_token;
-                            
-                                        // Handle the ID token as needed (e.g., send it to your backend for verification)
-                                        console.log('ID token:', idToken);
-                                    }, function(error) {
-                                        console.error('Error signing in with Google:', error);
-                                    });
-                                }
-                            </script>
-                            
-                            
+                            <div class="g-signin2" data-onsuccess="onSignIn"></div>
                         </div>
                     </form>
+
                     <script>
-                        document.getElementById("loginForm").addEventListener("submit", function(event) {
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const userToken = localStorage.getItem('userToken');
+                            if (userToken) {
+                                window.location.href = 'profile.html';
+                            }
+                        });
+
+                        document.getElementById("loginForm").addEventListener("submit", function (event) {
                             event.preventDefault(); // Prevent default form submission
-                    
+
                             var email = document.querySelector('input[name="email"]').value;
                             var password = document.querySelector('input[name="password"]').value;
-                    
+
                             // Basic validation
                             if (!email || !password) {
-                                alert('All fields are required');
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Validation Error',
+                                    text: 'All fields are required'
+                                });
                                 return;
                             }
-                    
+
                             var formData = {
                                 email: email,
                                 password: password
                             };
-                    
+                            document.getElementById('loginBtn').textContent = 'Loading...'
                             // Send login data to backend API
                             fetch('http://localhost:8080/users/login', {
                                 method: 'POST',
@@ -92,58 +80,87 @@
                                 body: JSON.stringify(formData)
                             })
                             .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
-                                }
+                               
                                 return response.json(); // Parse JSON response
                             })
                             .then(data => {
+                            document.getElementById('loginBtn').textContent = 'Click to Login'
+
                                 // Handle successful login
                                 if (data.token) {
-                                    alert('Login successful!');
-                                    // Store the token securely
-                                    localStorage.setItem('token', data.token);
-                                    // Optionally redirect to a protected route
-                                    window.location.href = '/dashboard.html';
+
+                                    if(data.user.role !== "USER"){
+                                        Swal.fire({
+                                    icon: 'error',
+                                    title: 'An error occurred',
+                                    text: 'Invalid Email or Password !!'
+                                });
+                                        return;
+                                    }
+                                    // Store the token and user info securely
+                                    localStorage.setItem('userToken', data.token);
+                                    localStorage.setItem('userInfo', JSON.stringify(data.user));
+
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Login Successful',
+                                        text: 'You have been successfully logged in!',
+                                        confirmButtonText: 'Go to Home'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = 'index.html';
+                                        }
+                                    });
                                 } else {
-                                    alert('Error: ' + data.message);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Login Failed',
+                                        text: data.message
+                                    });
                                 }
                             })
                             .catch(error => {
-                                console.error('Error:', error);
-                                alert('An error occurred. Please try again.');
+                                console.log('Here is error', error);
+                            document.getElementById('loginBtn').textContent = 'Click to Login'
+
+                                if(error.status == 400){
+                                    Swal.fire({
+                                    icon: 'error',
+                                    title: 'An error occurred',
+                                    text: 'Invalid Email or Password !!'
+                                });
+                                } else {
+                                    Swal.fire({
+                                    icon: 'error',
+                                    title: 'An error occurred',
+                                    text: 'User doesnt exist !!'
+                                });
+                                }
+                               
                             });
                         });
-                    
+
                         function startGoogleSignin() {
                             var auth2 = gapi.auth2.getAuthInstance();
-                            auth2.signIn().then(function(googleUser) {
+                            auth2.signIn().then(function (googleUser) {
                                 var profile = googleUser.getBasicProfile();
                                 var idToken = googleUser.getAuthResponse().id_token;
-                    
+
                                 // Handle the ID token as needed (e.g., send it to your backend for verification)
                                 console.log('ID token:', idToken);
-                            }, function(error) {
+                            }, function (error) {
                                 console.error('Error signing in with Google:', error);
                             });
                         }
                     </script>
-                    
-
-
-                    
                 </div>
             </div>
-
-            
         </div>
-
     </div>
-    </body>
 
     <script src="assets/js/jquery-3.2.1.min.js"></script>
     <script src="assets/js/popper.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/script.js"></script>
-
+</body>
 </html>
