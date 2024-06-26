@@ -1074,8 +1074,9 @@ section {
 .gallery .swiper-pagination .swiper-pagination-bullet {
   width: 12px;
   height: 12px;
-  background-color: red;
- /* background-color: #d1d1d7;*/
+  background-color: var(--color-footer);
+  /*background-color: red;
+  background-color: #d1d1d7;*/
   opacity: 1;
 }
 

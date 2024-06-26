@@ -23,221 +23,173 @@
     background-image: url(assets/img/bg_2.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-}
+    }
 
-h2 {
-    text-align: start;
-}
+    h2 {
+        text-align: start;
+    }
 
-form {
-    max-width: 400px;
-    width: 100%;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8); /* Adjust the alpha value for transparency */
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+    form {
+        max-width: 400px;
+        width: 100%;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8); /* Adjust the alpha value for transparency */
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-heading {
+                font-size: 1.5em; /* Font size */
+                font-weight: bold; /* Font weight */
+                margin-bottom: 10px; /* Margin below the heading */
+                text-align: center; /* Center the text */
+                /*color: #333;  Text color */
+                color: #915c83;
+    }
+    label {
+        display: block;
+        margin-bottom: 8px;
+    }
 
-label {
-    display: block;
-    margin-bottom: 8px;
-}
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
 
-input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+    button {
+        background-color: #915c83;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-button {
-    background-color: #915c83;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+    button:hover {
+        background-color: #915c83;
+    }
 
-button:hover {
-    background-color: #915c83;
-}
-
-    </style>
+        </style>
 </head>
-
 <body>
-
-    <h2>Create Your Account</h2>
-    <form id="signupForm" >
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-
-        <label for="confirmPassword">Confirm Password:</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" required>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <button type="submit" id="submitBtn" style="border: none; outline: #915c83;">Create Account</button>
-        <p class="no-c mt-2">Already register? <a style="color: blueviolet;" href="login.html" class="text-black">Go to Login</a></p>
-                          
-
-    </form>
-
-<script>
-    document.getElementById("submitBtn").addEventListener("click", function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
-        var confirmPassword = document.getElementById('confirmPassword').value;
-        var email = document.getElementById('email').value;
-
-        // Basic validation
-        if (!username || !password || !confirmPassword || !email) {
-          Swal.fire({
-              icon: 'error',
-              title: 'Validation Error',
-              text: "All Fields are required !!"
-          });
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Validation Error',
-              text: "Password doesn't matched !!"
-          });
-            return;
-        }
-
-
-        document.getElementById("submitBtn").textContent  = 'Loading...'
-        // Create an object with the form data
-        var formData = {
-            username: username,
-            password: password,
-            email: email
-        };
-
-        // Send the form data to the backend API using fetch
-        fetch('http://localhost:8080/users/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-
-        .then(response => {
-             document.getElementById("submitBtn").textContent  = 'Create Account'
-               
-                return response.json(); // Parse JSON response
-            })
-            .then(data => {
-                // Handle successful registration
-                console.log(data);
-                if (data.status === 200) {
-                    Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: "Account created successfully !!",
-        confirmButtonText: 'Go to Login'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = 'login.html';
-        }
-    });
-                    // Optionally redirect to login page
-                    //window.location.href = '';
-                } 
-                else if(data.status ===400){
-                Swal.fire({
-              icon: 'error',
-              title: 'Exist User',
-              text: "Account already exists !!"
-          });
-                }
-                 else
-                 {
-                    Swal.fire({
-              icon: 'error',
-              title: 'Something went wrong',
-              text:  data.message
-          });
-                }
-            })
-        /*.then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Account created successfully!');
-                // Redirect or update UI
-            } else {
-                alert('Error: ' + data.message);
-            }
-        })*/
-        .catch(error => {
-            console.error('Error:', error);
-            document.getElementById("submitBtn").textContent  = 'Create Account'
-
-            Swal.fire({
-              icon: 'error',
-              title: 'Something went wrong',
-              text:  "Please try again !!"
-          });
-        });
-    });
-</script>
-
-
-
-
-    <!--<h2>Create Your Account</h2>
-    <form action="server.php" method="post" onsubmit="validateForm()">
-        <form action="server.php" method="post">
+        <form id="signupForm">
+            <div class="form-heading">Sign up to Event Ease Hub</div>
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
-    
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-    
-            <label for="confirmPassword">Confirm Password:</label>
+            <p id="passwordValidation" style="color: red; display: none;"></p> <label for="confirmPassword">Confirm Password:</label>
             <input type="password" id="confirmPassword" name="confirmPassword" required>
-    
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
-    
-            <button type="submit">Create Account</button>
+            <button type="submit" id="submitBtn" style="border: none; outline: #915c83;">Create Account</button>
+            <p class="no-c mt-2">Already register? <a style="color: blueviolet;" href="login.html" class="text-black">Go to Login</a></p>
         </form>
-    </form>
-    <script>
-        function validateForm() {
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-            var confirmPassword = document.getElementById('confirmPassword').value;
-            var email = document.getElementById('email').value;
+    
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <script>
+            document.getElementById("submitBtn").addEventListener("click", function (event) {
+                event.preventDefault(); // Prevent the default form submission
+    
+                var username = document.getElementById('username').value;
+                var password = document.getElementById('password').value;
+                var confirmPassword = document.getElementById('confirmPassword').value;
+                var email = document.getElementById('email').value;
+    
+                // Improved password validation with regex
+                //const passwordRegex = /^(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.\W)[a-zA-Z0-9\W]{6}$/; // Matches at least 1 digit, lowercase letter, uppercase letter, and special character within 6 characters
+                const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[a-zA-Z0-9\W]{6,}$/;
 
-            // Basic validation
-            if (!username || !password || !confirmPassword || !email) {
-                alert('All fields are required');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
-
-            // If all validation passes, you can submit the form or perform further actions
-            alert('Good to go');
-            // document.getElementById('signupForm').submit(); // Uncomment this line to submit the form
-        }
-    </script> -->
+                // Clear any existing inline validation message (optional)
+                document.getElementById("passwordValidation").textContent = "";
+    
+                if (!username || !password || !confirmPassword || !email) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: "All Fields are required !!"
+                    });
+                    return;
+                }
+    
+                if (password !== confirmPassword) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: "Password doesn't match !!"
+                    });
+                    return;
+                }
+    
+                if (!passwordRegex.test(password)) {
+                    // Improved inline validation message with specific requirements
+                    document.getElementById("passwordValidation").textContent = "Password must be 6 characters and contain at least 1 digit, lowercase letter, uppercase letter, and special character.";
+                    document.getElementById("passwordValidation").style.display = "block";
+                    return;
+                }
+    
+                document.getElementById("submitBtn").textContent = 'Loading...';
+                
+                // Create an object with the form data
+                var formData = {
+                    username: username,
+                    password: password,
+                    email: email
+                };
+    
+                // Send the form data to the backend API using fetch
+                fetch('http://localhost:8080/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    document.getElementById("submitBtn").textContent = 'Create Account';
+                    return response.json(); // Parse JSON response
+                })
+                .then(data => {
+                    // Handle successful registration
+                    console.log(data);
+                    if (data.status === 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: "Account created successfully !!",
+                            confirmButtonText: 'Go to Login'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = 'login.html';
+                            }
+                        });
+                    } else if (data.status === 400) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Exist User',
+                            text: "Account already exists !!"
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Something went wrong',
+                            text: data.message
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById("submitBtn").textContent = 'Create Account';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Something went wrong',
+                        text: "Please try again !!"
+                    });
+                });
+            });
+        </script>
 </body>
 
 </html>
